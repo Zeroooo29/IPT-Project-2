@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import StaffMember
+from .forms import StaffMemberForm
 
 
 class StaffListView(ListView):
@@ -35,6 +38,26 @@ class StaffDetailView(DetailView):
     model = StaffMember
     template_name = 'staff/staff_detail.html'
     context_object_name = 'staff_member'
+
+
+class StaffCreateView(LoginRequiredMixin, CreateView):
+    model = StaffMember
+    form_class = StaffMemberForm
+    template_name = 'staff/staff_form.html'
+    success_url = reverse_lazy('staff:staff_list')
+
+
+class StaffUpdateView(LoginRequiredMixin, UpdateView):
+    model = StaffMember
+    form_class = StaffMemberForm
+    template_name = 'staff/staff_form.html'
+    success_url = reverse_lazy('staff:staff_list')
+
+
+class StaffDeleteView(LoginRequiredMixin, DeleteView):
+    model = StaffMember
+    template_name = 'staff/staff_confirm_delete.html'
+    success_url = reverse_lazy('staff:staff_list')
 
 
 class DepartmentStaffView(ListView):
