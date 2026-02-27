@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: store-management
+    runtime: python
+    pythonVersion: 3.11
+    buildCommand: ./build.sh
+    startCommand: gunicorn store_management.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: store_management.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+
+databases:
+  - name: store-db
+    databaseName: store_management
+    user: store_user
+    region: oregon
